@@ -9,9 +9,9 @@
 
     <!-- SEO & Search Engine Optimization -->
     <meta name="description" content="Free AI Pixel Art Generator. Instantly transform text descriptions into high-quality 8-bit, 16-bit, retro, anime, and cyberpunk pixel art with artificial intelligence.">
-    <meta name="keywords" content="pixel art generator, ai pixel art, 8bit art generator, 16bit retro art, pixel mind, ai image generator, retro game sprites, free pixel art creator">
+    <meta name="keywords" content="pixel art generator, ai pixel art, 8bit art generator, 16bit retro art, pixelartgenerator, ai image generator, retro game sprites, free pixel art creator">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="author" content="PixelMind AI">
+    <meta name="author" content="PixelArtGenerator AI">
     <link rel="canonical" href="https://pixelartgenerator.com/">
 
     <!-- Open Graph / Social Media (Facebook, WhatsApp, LinkedIn) -->
@@ -517,7 +517,7 @@
         downloadBtn.addEventListener('click', () => {
             const link = document.createElement('a');
             const cleanTitle = artTitle.textContent.toLowerCase().replace(/[^a-z0-9]/g, '_');
-            link.download = `pixelmind_${cleanTitle || 'art'}.png`;
+            link.download = `pixelartgenerator_${cleanTitle || 'art'}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
@@ -543,6 +543,4 @@
         });
     </script>
 </body>
-<script data-goatcounter="https://edthedog-debug5.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
 </html>
