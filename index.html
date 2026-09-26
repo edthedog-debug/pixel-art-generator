@@ -1,2861 +1,671 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Dark Pixel Tale - The Skull & The Hare</title>
-
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: #050505;
-    min-height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    overflow: hidden;
-
-    font-family: 'Press Start 2P', monospace;
-}
-
-#game-container {
-    position: relative;
-
-    width: 960px;
-    height: 600px;
-
-    max-width: 100vw;
-    max-height: 100vh;
-
-    overflow: hidden;
-
-    background: #080912;
-
-    border: 4px solid #35353d;
-
-    box-shadow:
-        0 0 35px rgba(120,0,0,.35),
-        inset 0 0 50px rgba(0,0,0,.9);
-}
-
-canvas {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-}
-
-#story-text {
-
-    position: absolute;
-
-    z-index: 20;
-
-    left: 50%;
-    bottom: 14px;
-
-    transform: translateX(-50%);
-
-    width: 88%;
-
-    min-height: 54px;
-
-    padding: 12px 18px;
-
-    background:
-        linear-gradient(
-            rgba(4,4,7,.94),
-            rgba(12,8,10,.96)
-        );
-
-    border: 2px solid #777;
-
-    box-shadow:
-        0 0 0 3px #111,
-        0 5px 25px rgba(0,0,0,.8);
-
-    color: #f1eeee;
-
-    font-size: 11px;
-
-    line-height: 1.7;
-
-    text-align: center;
-
-    pointer-events: none;
-}
-
-#title-screen {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 50;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(60,0,0,.25),
-            rgba(0,0,0,.98) 70%
-        );
-
-    cursor: pointer;
-}
-
-#title-screen h1 {
-
-    color: #d00000;
-
-    font-size: 30px;
-
-    line-height: 1.7;
-
-    text-shadow:
-        3px 3px 0 #240000,
-        0 0 25px #900000,
-        0 0 60px #500000;
-
-    animation: titlePulse 2.5s infinite;
-}
-
-#title-screen p {
-
-    margin-top: 40px;
-
-    color: #aaa;
-
-    font-size: 11px;
-
-    animation: blink 1.2s infinite;
-}
-
-#moral {
-
-    position: absolute;
-
-    z-index: 60;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 75%;
-
-    padding: 28px;
-
-    background: rgba(0,0,0,.95);
-
-    border: 3px solid #a00000;
-
-    color: #ff3333;
-
-    text-align: center;
-
-    font-size: 13px;
-
-    line-height: 2;
-
-    display: none;
-}
-
-@keyframes blink {
-
-    0%,100% {
-        opacity: 1;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- Title -->
+    <title>PIXEL ART GENERATOR - Free AI Pixel Art Creator</title>
+
+    <!-- SEO & Search Engine Optimization -->
+    <meta name="description" content="Free AI Pixel Art Generator. Instantly transform text descriptions into high-quality 8-bit, 16-bit, retro, anime, and cyberpunk pixel art with artificial intelligence.">
+    <meta name="keywords" content="pixel art generator, ai pixel art, 8bit art generator, 16bit retro art, pixelartgenerator, ai image generator, retro game sprites, free pixel art creator">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="PixelArtGenerator AI">
+    <link rel="canonical" href="https://pixelartgenerator.com/">
+
+    <!-- Open Graph / Social Media (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pixelartgenerator.com/">
+    <meta property="og:title" content="PIXEL ART GENERATOR - Free AI Pixel Art Creator">
+    <meta property="og:description" content="Generate stunning 8-bit, 16-bit, and cyberpunk pixel art instantly with AI. Describe anything and let AI draw it.">
+    <meta property="og:image" content="https://pixelartgenerator.com/preview.png">
+    <meta property="og:site_name" content="PIXEL ART GENERATOR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PIXEL ART GENERATOR - AI Pixel Art Creator">
+    <meta name="twitter:description" content="Turn any prompt into retro pixel art instantly using advanced generative AI.">
+    <meta name="twitter:image" content="https://pixelartgenerator.com/preview.png">
+
+    <!-- iOS & Mobile Optimization -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pixel Art AI">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://pixelartgenerator.com/#webapp",
+          "name": "PixelArtGenerator",
+          "url": "https://pixelartgenerator.com/",
+          "description": "Free AI Pixel Art Generator to convert text prompts into 8-bit, 16-bit, and retro pixel artwork instantly.",
+          "applicationCategory": "DesignApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript and HTML5 Canvas support.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://pixelartgenerator.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does the AI Pixel Art Generator work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The generator uses advanced neural networks to convert your written descriptions into retro pixel art styles like 8-bit, 16-bit, and cyberpunk."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is PixelArtGenerator completely free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, PixelArtGenerator is 100% free with no sign-ups or subscriptions required."
+              }
+            }
+          ]
+        }
+      ]
     }
+    </script>
 
-    50% {
-        opacity: .2;
-    }
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-@keyframes titlePulse {
+        body {
+            background: #000000;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(94, 92, 230, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(191, 90, 242, 0.12) 0px, transparent 50%);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #f2f2f7;
+            padding: 24px 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    0%,100% {
-        transform: scale(1);
-    }
+        .container {
+            width: 100%;
+            max-width: 620px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-    50% {
-        transform: scale(1.025);
-    }
-}
+        .header {
+            text-align: center;
+            padding: 24px 12px 8px;
+        }
 
-</style>
+        .logo {
+            font-size: 2.4em;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            color: #8e8e93;
+            font-size: 0.95em;
+            font-weight: 400;
+            margin-top: 6px;
+            letter-spacing: -0.2px;
+        }
+
+        /* iOS Glassmorphism Card Style */
+        .card {
+            background: rgba(28, 28, 30, 0.72);
+            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            background: rgba(120, 120, 128, 0.18);
+            border-radius: 18px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: #0a84ff;
+            background: rgba(120, 120, 128, 0.24);
+        }
+
+        #themeInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            color: #ffffff;
+            font-size: 1.05em;
+            font-family: inherit;
+            outline: none;
+        }
+
+        #themeInput::placeholder {
+            color: #8e8e93;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .select-style {
+            background: rgba(120, 120, 128, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f2f2f7;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 0.9em;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            flex: 1;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+
+        /* Dark background for the dropdown menu options */
+        .select-style option {
+            background-color: #1c1c1e;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .btn {
+            background: #0a84ff;
+            border: none;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #0071e3;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(120, 120, 128, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #0a84ff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(120, 120, 128, 0.35);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .chip {
+            background: rgba(120, 120, 128, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 0.85em;
+            color: #8e8e93;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .chip:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chip:active {
+            transform: scale(0.95);
+        }
+
+        .result-card {
+            background: rgba(28, 28, 30, 0.72);
+            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            overflow: hidden;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .result-card.show {
+            display: block;
+            animation: iosFadeIn 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes iosFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .canvas-container {
+            background: #000000;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            min-height: 320px;
+        }
+
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .info {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-text h3 {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: -0.3px;
+        }
+
+        .info-text span {
+            color: #8e8e93;
+            font-size: 0.85em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .badge {
+            background: rgba(94, 92, 230, 0.2);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.78em;
+            color: #5e5ce6;
+            font-weight: 600;
+            border: 1px solid rgba(94, 92, 230, 0.3);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: #8e8e93;
+            font-size: 0.95em;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #0a84ff;
+            border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+            margin: 0 auto 14px;
+        }
+
+        .error-msg {
+            color: #ff453a;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        /* SEO Content Styles */
+        .seo-content {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            color: #a1a1a6;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+
+        .seo-content h2 {
+            color: #ffffff;
+            font-size: 1.25em;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+        }
+
+        .seo-content h3 {
+            color: #f2f2f7;
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        .seo-content p {
+            margin-bottom: 10px;
+        }
+
+        .seo-content ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .seo-content li {
+            margin-bottom: 6px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 500px) {
+            .input-group {
+                flex-direction: column;
+                background: transparent;
+                padding: 0;
+                border: none;
+            }
+            #themeInput {
+                background: rgba(120, 120, 128, 0.18);
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .controls-row {
+                flex-direction: column;
+            }
+            .info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<div id="game-container">
-
-<canvas id="gameCanvas"></canvas>
-
-<div id="story-text"></div>
-
-<div id="moral">
-
-    MORAL OF THE STORY
-
-    <br><br>
-
-    PRIDE CAN MAKE EVEN THE FASTEST CREATURE
-    <br>
-    FORGET THAT TIME NEVER STOPS.
-
-    <br><br>
-
-    CLICK TO RESTART
-
-</div>
-
-<div id="title-screen">
-
-    <h1>
-        DARK PIXEL TALE
-        <br>
-        THE SKULL & THE HARE
-    </h1>
-
-    <p>CLICK TO BEGIN</p>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   CANVAS
-========================================================= */
-
-const canvas =
-    document.getElementById("gameCanvas");
-
-const ctx =
-    canvas.getContext("2d");
-
-canvas.width = 960;
-canvas.height = 600;
-
-ctx.imageSmoothingEnabled = false;
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-const storyText =
-    document.getElementById("story-text");
-
-const titleScreen =
-    document.getElementById("title-screen");
-
-const moral =
-    document.getElementById("moral");
-
-
-/* =========================================================
-   GAME STATE
-========================================================= */
-
-let gameStarted = false;
-
-let sceneIndex = 0;
-
-let sceneTimer = 0;
-
-let totalTime = 0;
-
-let cameraX = 0;
-
-let cameraTarget = 0;
-
-let cameraShake = 0;
-
-let particles = [];
-
-let hareDead = false;
-
-let deathFrame = 0;
-
-let endingShown = false;
-
-
-/* =========================================================
-   WORLD
-========================================================= */
-
-const WORLD_WIDTH = 2800;
-
-const BRIDGE_START = 1200;
-
-const BRIDGE_END = 1580;
-
-const FINISH_LINE = 2350;
-
-
-/* =========================================================
-   STORY
-========================================================= */
-
-const scenes = [
-
-{
-    type: "opening",
-    duration: 300,
-    text:
-    "Deep inside a cursed forest, the Hare discovered something that made him laugh."
-},
-
-{
-    type: "mock",
-    duration: 320,
-    text:
-    "HARE: \"You call yourself Death? You are far too slow to ever catch me!\""
-},
-
-{
-    type: "death_reply",
-    duration: 300,
-    text:
-    "The Skull slowly raised its head. It had existed longer than the forest itself."
-},
-
-{
-    type: "challenge",
-    duration: 320,
-    text:
-    "SKULL: \"Then let us settle this properly. I challenge you to a race.\""
-},
-
-{
-    type: "ready",
-    duration: 250,
-    text:
-    "The Hare laughed again. Neither creature realized what the race would become."
-},
-
-{
-    type: "race_start",
-    duration: 380,
-    text:
-    "The race began."
-},
-
-{
-    type: "hare_leads",
-    duration: 420,
-    text:
-    "The Hare sprinted ahead with incredible speed."
-},
-
-{
-    type: "skull_chases",
-    duration: 500,
-    text:
-    "The Skull followed. Never rushing. Never stopping."
-},
-
-{
-    type: "hare_far_ahead",
-    duration: 400,
-    text:
-    "The Hare looked behind him. The Skull was still far away."
-},
-
-{
-    type: "bridge",
-    duration: 450,
-    text:
-    "The Skull reached the ancient bridge of bones and crossed it without slowing down."
-},
-
-{
-    type: "hare_beyond_bridge",
-    duration: 350,
-    text:
-    "Far beyond the bridge, the Hare finally reached a quiet meadow."
-},
-
-{
-    type: "reflection",
-    duration: 350,
-    text:
-    "HARE: \"How am I going so fast? I've gained so much ground.\""
-},
-
-{
-    type: "decision_rest",
-    duration: 350,
-    text:
-    "HARE: \"I have plenty of time. I'll rest here and continue when Death gets closer.\""
-},
-
-{
-    type: "sleep",
-    duration: 450,
-    text:
-    "The Hare closed his eyes. His confidence slowly became sleep."
-},
-
-{
-    type: "skull_approaches",
-    duration: 550,
-    text:
-    "Meanwhile, the Skull continued walking through the darkness."
-},
-
-{
-    type: "skull_sees_hare",
-    duration: 350,
-    text:
-    "At last, the Skull saw the sleeping Hare."
-},
-
-{
-    type: "choice",
-    duration: 350,
-    text:
-    "SKULL: \"You believed your speed could outrun time itself.\""
-},
-
-{
-    type: "blade",
-    duration: 180,
-    text:
-    "The Skull slowly drew its ancient blade."
-},
-
-{
-    type: "strike",
-    duration: 120,
-    text:
-    "The blade fell."
-},
-
-{
-    type: "death",
-    duration: 300,
-    text:
-    "The Hare never woke."
-},
-
-{
-    type: "victory",
-    duration: 400,
-    text:
-    "The Skull continued toward the distant finish line."
-},
-
-{
-    type: "ending",
-    duration: 500,
-    text:
-    "Death had never been fast. It had simply never stopped walking."
-}
-
-];
-
-
-/* =========================================================
-   SKULL
-========================================================= */
-
-class Skull {
-
-    constructor() {
-
-        this.x = 260;
-
-        this.y = 395;
-
-        this.frame = 0;
-
-        this.timer = 0;
-
-        this.walkCycle = 0;
-
-        this.breath = 0;
-    }
-
-    update(running = false) {
-
-        this.breath += .08;
-
-        if (running) {
-
-            this.timer++;
-
-            if (this.timer >= 6) {
-
-                this.timer = 0;
-
-                this.frame =
-                    this.frame === 0
-                    ? 1
-                    : 0;
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">PIXEL ART GENERATOR</h1>
+            <p class="tagline">Describe any idea • AI creates your pixel art image</p>
+        </header>
+
+        <main class="card">
+            <div class="input-group">
+                <input type="text" id="themeInput" placeholder="e.g., Fire dragon in a night castle..." maxlength="150" autocomplete="off">
+                <button class="btn" id="generateBtn">✨ Generate</button>
+            </div>
+
+            <div class="controls-row">
+                <select id="styleSelect" class="select-style" aria-label="Select Pixel Art Style">
+                    <option value="pixel_retro">🎮 8-bit Retro Pixel Art</option>
+                    <option value="pixel_16bit">🕹️ Detailed 16-bit Pixel Art</option>
+                    <option value="cyberpunk">🌆 Cyberpunk Pixel</option>
+                    <option value="fantasy">🔮 Epic Fantasy Pixel</option>
+                    <option value="anime">🍙 Anime Pixel Art</option>
+                </select>
+                <select id="sizeSelect" class="select-style" aria-label="Select Pixel Resolution">
+                    <option value="128">Fine Pixels (128px)</option>
+                    <option value="64" selected>Classic Pixels (64px)</option>
+                    <option value="32">Retro Pixels (32px)</option>
+                </select>
+            </div>
+
+            <div class="chips">
+                <span class="chip" data-theme="Scary shadow monster">👹 Monster</span>
+                <span class="chip" data-theme="Sunset over snowy mountains">🌅 Sunset</span>
+                <span class="chip" data-theme="Cyberpunk city with neon lights">🤖 Cyberpunk</span>
+                <span class="chip" data-theme="Egyptian pyramid under the stars">🏛️ Pyramid</span>
+                <span class="chip" data-theme="Cute cat with a wizard hat">🐱 Wizard Cat</span>
+                <span class="chip" data-theme="Dragon breathing blue fire">🐉 Dragon</span>
+            </div>
+            <div class="error-msg" id="errorMsg"></div>
+        </main>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span>Creating image with AI... This may take a few seconds.</span>
+        </div>
+
+        <section class="result-card" id="resultCard">
+            <div class="canvas-container">
+                <canvas id="pixelCanvas"></canvas>
+            </div>
+            <div class="info">
+                <div class="info-text">
+                    <h3 id="artTitle">Your Creation</h3>
+                    <span id="artSubtitle">High resolution render</span>
+                </div>
+                <div class="actions">
+                    <span class="badge">Generative AI</span>
+                    <button class="btn btn-secondary" id="downloadBtn">⬇️ Download</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Text Content & Information Section -->
+        <article class="card seo-content">
+            <section>
+                <h2>Create Retro AI Pixel Art Instantly</h2>
+                <p>Welcome to <strong>PixelArtGenerator</strong>, the ultimate free web tool for turning text prompts into retro 8-bit, 16-bit, and classic pixel artwork. Powered by generative artificial intelligence, you can design video game sprites, retro avatars, scenery, and fantasy creatures in seconds.</p>
+            </section>
+
+            <section>
+                <h2>Supported Pixel Styles & Resolutions</h2>
+                <ul>
+                    <li><strong>8-Bit Retro:</strong> Authentic arcade and vintage console style with iconic pixelation.</li>
+                    <li><strong>16-Bit Detailed:</strong> Vibrant SNES-era aesthetic with richer color palettes.</li>
+                    <li><strong>Cyberpunk & Synthwave:</strong> Glowing neon colors and futuristic cityscapes.</li>
+                    <li><strong>Anime & Fantasy:</strong> Japanese video game aesthetic and magical pixel environments.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Frequently Asked Questions</h2>
+                <h3>How do I make good pixel art with AI?</h3>
+                <p>Keep your descriptions clear and concise. For example, instead of "a dog", try "cute golden retriever puppy with a red collar, retro arcade style". Select the pixel size (32px, 64px, or 128px) that best matches your vision.</p>
+                
+                <h3>Is this AI Pixel Art Generator free?</h3>
+                <p>Yes, PixelArtGenerator is completely free to use. You can generate, customize, and download high-resolution PNG images without creating an account.</p>
+            </section>
+        </article>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pixelCanvas');
+        const ctx = canvas.getContext('2d');
+        const themeInput = document.getElementById('themeInput');
+        const styleSelect = document.getElementById('styleSelect');
+        const sizeSelect = document.getElementById('sizeSelect');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resultCard = document.getElementById('resultCard');
+        const loading = document.getElementById('loading');
+        const artTitle = document.getElementById('artTitle');
+        const artSubtitle = document.getElementById('artSubtitle');
+        const errorMsg = document.getElementById('errorMsg');
+        const chips = document.querySelectorAll('.chip');
+
+        const RENDER_CANVAS_SIZE = 512;
+        canvas.width = RENDER_CANVAS_SIZE;
+        canvas.height = RENDER_CANVAS_SIZE;
+
+        const STYLE_PROMPTS = {
+            pixel_retro: "8-bit pixel art style, sprite art, retro video game aesthetic, clean pixel lines, vibrant retro color palette",
+            pixel_16bit: "16-bit SNES style pixel art, detailed pixelated art, vibrant colors, game asset",
+            cyberpunk: "cyberpunk pixel art, neon colors, synthwave pixel aesthetic, dark glowing sci-fi atmosphere",
+            fantasy: "epic fantasy pixel art, detailed retro game artwork, magical lighting, crisp pixel art style",
+            anime: "Japanese anime pixel art style, cute vibrant pixel aesthetic, retro 90s anime video game style"
+        };
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = msg ? 'block' : 'none';
+        }
+
+        function generateAIImage(userPrompt) {
+            if (!userPrompt.trim()) {
+                showError('Please enter a description for the image.');
+                return;
             }
 
-            this.walkCycle += .15;
-        }
-    }
+            showError('');
+            generateBtn.disabled = true;
+            loading.classList.add('show');
+            resultCard.classList.remove('show');
 
-    draw(scale = 1) {
+            const styleKey = styleSelect.value;
+            const styleModifier = STYLE_PROMPTS[styleKey] || STYLE_PROMPTS.pixel_retro;
+            const fullPrompt = `${userPrompt}, ${styleModifier}, high quality pixel art`;
+            
+            const seed = Math.floor(Math.random() * 1000000);
+            const encodedPrompt = encodeURIComponent(fullPrompt);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${seed}`;
 
-        const bob =
-            Math.sin(this.walkCycle) * 2;
+            const img = new Image();
+            img.crossOrigin = "anonymous";
 
-        const x =
-            this.x - cameraX;
+            img.onload = () => {
+                const pixelResolution = parseInt(sizeSelect.value, 10) || 64;
+                renderPixelatedImage(img, pixelResolution);
 
-        const y =
-            this.y + bob;
+                artTitle.textContent = userPrompt;
+                artSubtitle.textContent = `Pixel Grid: ${pixelResolution}×${pixelResolution} • Pollinations AI`;
+                
+                loading.classList.remove('show');
+                resultCard.classList.add('show');
+                generateBtn.disabled = false;
+            };
 
-        ctx.save();
+            img.onerror = () => {
+                loading.classList.remove('show');
+                generateBtn.disabled = false;
+                showError('There was a problem generating the image. Please try again.');
+            };
 
-        ctx.translate(x, y);
-
-        ctx.scale(scale, scale);
-
-
-        /* shadow */
-
-        ctx.fillStyle =
-            "rgba(0,0,0,.45)";
-
-        ctx.fillRect(
-            -25,
-            7,
-            55,
-            8
-        );
-
-
-        /* cloak */
-
-        ctx.fillStyle = "#17171d";
-
-        ctx.fillRect(
-            -24,
-            -30,
-            48,
-            85
-        );
-
-        ctx.fillStyle = "#292930";
-
-        ctx.fillRect(
-            -30,
-            -25,
-            9,
-            70
-        );
-
-        ctx.fillRect(
-            21,
-            -25,
-            9,
-            70
-        );
-
-
-        /* hood */
-
-        ctx.fillStyle = "#35353d";
-
-        ctx.fillRect(
-            -30,
-            -78,
-            60,
-            50
-        );
-
-        ctx.fillRect(
-            -22,
-            -87,
-            44,
-            12
-        );
-
-
-        /* skull */
-
-        ctx.fillStyle = "#ddd7c9";
-
-        ctx.fillRect(
-            -20,
-            -68,
-            40,
-            39
-        );
-
-        ctx.fillRect(
-            -14,
-            -74,
-            28,
-            8
-        );
-
-
-        /* skull shadows */
-
-        ctx.fillStyle = "#99938a";
-
-        ctx.fillRect(
-            -20,
-            -36,
-            40,
-            8
-        );
-
-        ctx.fillRect(
-            -16,
-            -65,
-            6,
-            25
-        );
-
-        ctx.fillRect(
-            10,
-            -65,
-            6,
-            25
-        );
-
-
-        /* eyes */
-
-        ctx.fillStyle = "#050505";
-
-        ctx.fillRect(
-            -14,
-            -60,
-            10,
-            10
-        );
-
-        ctx.fillRect(
-            4,
-            -60,
-            10,
-            10
-        );
-
-
-        /* red eyes */
-
-        ctx.fillStyle = "#df0000";
-
-        ctx.fillRect(
-            -11,
-            -57,
-            4,
-            4
-        );
-
-        ctx.fillRect(
-            7,
-            -57,
-            4,
-            4
-        );
-
-
-        /* nose */
-
-        ctx.fillStyle = "#111";
-
-        ctx.fillRect(
-            -4,
-            -47,
-            8,
-            6
-        );
-
-
-        /* teeth */
-
-        ctx.fillStyle = "#f5f2e9";
-
-        for (
-            let i = 0;
-            i < 5;
-            i++
-        ) {
-
-            ctx.fillRect(
-                -14 + i * 6,
-                -36,
-                4,
-                7
-            );
+            img.src = imageUrl;
         }
 
+        function renderPixelatedImage(img, pixelGridSize) {
+            // Draw onto a small offscreen canvas to force pixelated downsampling
+            const offscreenCanvas = document.createElement('canvas');
+            offscreenCanvas.width = pixelGridSize;
+            offscreenCanvas.height = pixelGridSize;
+            const offscreenCtx = offscreenCanvas.getContext('2d');
 
-        /* walking arms */
+            offscreenCtx.drawImage(img, 0, 0, pixelGridSize, pixelGridSize);
 
-        const swing =
-            this.frame === 0 ? 5 : -5;
+            // Scale back up to main canvas disabling smoothing for sharp pixel edges
+            ctx.imageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
 
-        ctx.fillStyle = "#222229";
-
-        ctx.fillRect(
-            -34,
-            -20 + swing,
-            9,
-            45
-        );
-
-        ctx.fillRect(
-            25,
-            -20 - swing,
-            9,
-            45
-        );
-
-
-        /* legs */
-
-        ctx.fillRect(
-            -18,
-            42 + swing,
-            10,
-            28
-        );
-
-        ctx.fillRect(
-            8,
-            42 - swing,
-            10,
-            28
-        );
-
-
-        /* blade */
-
-        if (
-            sceneIndex >= 17 &&
-            !hareDead
-        ) {
-
-            ctx.fillStyle =
-                "#c9c9c9";
-
-            ctx.fillRect(
-                35,
-                -40,
-                6,
-                85
-            );
-
-            ctx.fillStyle =
-                "#ffffff";
-
-            ctx.fillRect(
-                41,
-                -40,
-                3,
-                65
-            );
-
-            ctx.fillStyle =
-                "#5b2929";
-
-            ctx.fillRect(
-                31,
-                40,
-                20,
-                6
-            );
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(offscreenCanvas, 0, 0, pixelGridSize, pixelGridSize, 0, 0, canvas.width, canvas.height);
         }
 
-        ctx.restore();
-    }
-}
-
-
-/* =========================================================
-   HARE
-========================================================= */
-
-class Hare {
-
-    constructor() {
-
-        this.x = 420;
-
-        this.y = 400;
-
-        this.frame = 0;
-
-        this.timer = 0;
-
-        this.runCycle = 0;
-
-        this.sleeping = false;
-
-        this.lookBack = false;
-    }
-
-    update(running = false) {
-
-        if (!running) return;
-
-        this.timer++;
-
-        if (this.timer >= 4) {
-
-            this.timer = 0;
-
-            this.frame =
-                this.frame === 0
-                ? 1
-                : 0;
-        }
-
-        this.runCycle += .25;
-    }
-
-    draw(scale = 1) {
-
-        const x =
-            this.x - cameraX;
-
-        const y =
-            this.y +
-            Math.sin(this.runCycle) * 2;
-
-        ctx.save();
-
-        ctx.translate(x, y);
-
-        ctx.scale(scale, scale);
-
-
-        /* shadow */
-
-        ctx.fillStyle =
-            "rgba(0,0,0,.4)";
-
-        ctx.fillRect(
-            -35,
-            5,
-            75,
-            9
-        );
-
-
-        if (this.sleeping) {
-
-            this.drawSleeping();
-
-        } else {
-
-            this.drawRunning();
-        }
-
-        ctx.restore();
-    }
-
-
-    drawRunning() {
-
-        const leg =
-            this.frame === 0
-            ? 0
-            : 10;
-
-
-        /* rear body */
-
-        ctx.fillStyle = "#8f4b28";
-
-        ctx.fillRect(
-            -32,
-            -45,
-            55,
-            43
-        );
-
-
-        /* belly */
-
-        ctx.fillStyle = "#b86a3c";
-
-        ctx.fillRect(
-            -20,
-            -36,
-            34,
-            30
-        );
-
-
-        /* rear leg */
-
-        ctx.fillStyle = "#713b20";
-
-        ctx.fillRect(
-            -22,
-            -8 + leg,
-            13,
-            38 - leg
-        );
-
-
-        /* front leg */
-
-        ctx.fillRect(
-            8,
-            -8 - leg,
-            13,
-            38 + leg
-        );
-
-
-        /* head */
-
-        ctx.fillStyle = "#a75a31";
-
-        ctx.fillRect(
-            12,
-            -70,
-            43,
-            34
-        );
-
-
-        /* ears */
-
-        ctx.fillStyle = "#7d4023";
-
-        ctx.fillRect(
-            17,
-            -118,
-            12,
-            50
-        );
-
-        ctx.fillRect(
-            38,
-            -125,
-            13,
-            57
-        );
-
-
-        /* inner ears */
-
-        ctx.fillStyle = "#d98c8c";
-
-        ctx.fillRect(
-            21,
-            -109,
-            5,
-            32
-        );
-
-        ctx.fillRect(
-            42,
-            -116,
-            5,
-            36
-        );
-
-
-        /* eye */
-
-        ctx.fillStyle = "#080505";
-
-        ctx.fillRect(
-            38,
-            -59,
-            8,
-            8
-        );
-
-        ctx.fillStyle = "#fff";
-
-        ctx.fillRect(
-            40,
-            -58,
-            2,
-            2
-        );
-
-
-        /* nose */
-
-        ctx.fillStyle = "#e78b93";
-
-        ctx.fillRect(
-            51,
-            -48,
-            7,
-            5
-        );
-
-
-        /* tail */
-
-        ctx.fillStyle = "#eee";
-
-        ctx.fillRect(
-            -42,
-            -38,
-            18,
-            18
-        );
-
-
-        /*
-        When looking back, the hare turns
-        his head toward the Skull.
-        */
-
-        if (this.lookBack) {
-
-            ctx.fillStyle = "#080505";
-
-            ctx.fillRect(
-                20,
-                -59,
-                8,
-                8
-            );
-        }
-    }
-
-
-    drawSleeping() {
-
-        /* body lying horizontally */
-
-        ctx.fillStyle = "#8f4b28";
-
-        ctx.fillRect(
-            -65,
-            -15,
-            95,
-            27
-        );
-
-        ctx.fillStyle = "#b86a3c";
-
-        ctx.fillRect(
-            -45,
-            -11,
-            55,
-            20
-        );
-
-
-        /* head */
-
-        ctx.fillStyle = "#a75a31";
-
-        ctx.fillRect(
-            15,
-            -28,
-            45,
-            30
-        );
-
-
-        /* ears lying down */
-
-        ctx.fillStyle = "#7d4023";
-
-        ctx.fillRect(
-            25,
-            -50,
-            35,
-            10
-        );
-
-        ctx.fillRect(
-            42,
-            -61,
-            30,
-            10
-        );
-
-
-        /* closed eye */
-
-        ctx.fillStyle = "#160606";
-
-        ctx.fillRect(
-            43,
-            -13,
-            10,
-            3
-        );
-
-
-        /* tail */
-
-        ctx.fillStyle = "#eee";
-
-        ctx.fillRect(
-            -68,
-            -12,
-            18,
-            18
-        );
-
-
-        /* Z */
-
-        ctx.fillStyle = "#aaa";
-
-        ctx.font =
-            "14px monospace";
-
-        ctx.fillText(
-            "Z",
-            65,
-            -55
-        );
-
-        ctx.fillText(
-            "Z",
-            78,
-            -72
-        );
-    }
-}
-
-
-const skull =
-    new Skull();
-
-const hare =
-    new Hare();
-
-
-/* =========================================================
-   PARTICLES
-========================================================= */
-
-function spawnDust(
-    x,
-    y,
-    amount = 2
-) {
-
-    for (
-        let i = 0;
-        i < amount;
-        i++
-    ) {
-
-        particles.push({
-
-            x:
-                x +
-                Math.random() * 15 -
-                7,
-
-            y:
-                y +
-                Math.random() * 5,
-
-            vx:
-                Math.random() * 1.8 -
-                .9,
-
-            vy:
-                -Math.random() * 1.2,
-
-            life:
-                25 +
-                Math.random() * 25
+        // Download canvas image
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            const cleanTitle = artTitle.textContent.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            link.download = `pixelartgenerator_${cleanTitle || 'art'}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         });
-    }
-}
 
-
-function updateParticles() {
-
-    particles.forEach(p => {
-
-        p.x += p.vx;
-
-        p.y += p.vy;
-
-        p.vy += .04;
-
-        p.life--;
-    });
-
-    particles =
-        particles.filter(
-            p => p.life > 0
-        );
-}
-
-
-function drawParticles() {
-
-    particles.forEach(p => {
-
-        ctx.fillStyle =
-            `rgba(180,170,155,${
-                p.life / 50
-            })`;
-
-        ctx.fillRect(
-            Math.round(
-                p.x - cameraX
-            ),
-            Math.round(p.y),
-            3,
-            3
-        );
-    });
-}
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-function drawBackground() {
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            600
-        );
-
-    gradient.addColorStop(
-        0,
-        "#050718"
-    );
-
-    gradient.addColorStop(
-        .55,
-        "#101329"
-    );
-
-    gradient.addColorStop(
-        1,
-        "#21171c"
-    );
-
-    ctx.fillStyle = gradient;
-
-    ctx.fillRect(
-        0,
-        0,
-        960,
-        600
-    );
-
-
-    /* moon */
-
-    const moonX =
-        760 -
-        cameraX * .06;
-
-    ctx.fillStyle =
-        "#d8c7a5";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        moonX,
-        95,
-        48,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    /* moon craters */
-
-    ctx.fillStyle =
-        "#b5a88e";
-
-    ctx.fillRect(
-        moonX - 20,
-        75,
-        10,
-        7
-    );
-
-    ctx.fillRect(
-        moonX + 12,
-        100,
-        14,
-        7
-    );
-
-
-    /* distant mountains */
-
-    ctx.fillStyle =
-        "#0b0d18";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        380
-    );
-
-    for (
-        let x = 0;
-        x <= 960;
-        x += 70
-    ) {
-
-        const world =
-            x +
-            cameraX * .12;
-
-        const h =
-            60 +
-            Math.abs(
-                Math.sin(
-                    world * .025
-                )
-            ) * 100;
-
-        ctx.lineTo(
-            x,
-            380 - h
-        );
-    }
-
-    ctx.lineTo(
-        960,
-        450
-    );
-
-    ctx.lineTo(
-        0,
-        450
-    );
-
-    ctx.fill();
-
-
-    /* ground */
-
-    ctx.fillStyle =
-        "#17151a";
-
-    ctx.fillRect(
-        0,
-        390,
-        960,
-        210
-    );
-
-
-    /* road */
-
-    ctx.fillStyle =
-        "#211d20";
-
-    ctx.fillRect(
-        -cameraX,
-        410,
-        WORLD_WIDTH,
-        100
-    );
-
-
-    /* road texture */
-
-    for (
-        let x =
-            Math.floor(cameraX / 50) * 50;
-        x <
-            cameraX + 1000;
-        x += 50
-    ) {
-
-        ctx.fillStyle =
-            x % 100 === 0
-            ? "#383033"
-            : "#292428";
-
-        ctx.fillRect(
-            x - cameraX,
-            455,
-            24,
-            4
-        );
-    }
-
-
-    drawTrees();
-
-    drawBridge();
-
-    drawFinishLine();
-}
-
-
-/* =========================================================
-   TREES
-========================================================= */
-
-function drawTrees() {
-
-    for (
-        let x =
-            Math.floor(cameraX / 130) * 130 - 130;
-
-        x <
-            cameraX + 1100;
-
-        x += 130
-    ) {
-
-        const sx =
-            x - cameraX;
-
-        const h =
-            100 +
-            Math.abs(
-                Math.sin(
-                    x * .04
-                )
-            ) * 100;
-
-
-        /* trunk */
-
-        ctx.fillStyle =
-            "#26191a";
-
-        ctx.fillRect(
-            sx,
-            390 - h,
-            16,
-            h
-        );
-
-
-        /* branches */
-
-        ctx.fillRect(
-            sx - 25,
-            320 - h * .25,
-            65,
-            8
-        );
-
-
-        /* crown */
-
-        ctx.fillStyle =
-            "#0c1016";
-
-        ctx.fillRect(
-            sx - 35,
-            280 - h,
-            90,
-            65
-        );
-
-        ctx.fillRect(
-            sx - 15,
-            250 - h,
-            50,
-            35
-        );
-    }
-}
-
-
-/* =========================================================
-   BRIDGE
-========================================================= */
-
-function drawBridge() {
-
-    const sx =
-        BRIDGE_START -
-        cameraX;
-
-    const width =
-        BRIDGE_END -
-        BRIDGE_START;
-
-
-    if (
-        sx > 960 ||
-        sx + width < 0
-    ) return;
-
-
-    /* abyss */
-
-    ctx.fillStyle =
-        "#040407";
-
-    ctx.fillRect(
-        sx,
-        400,
-        width,
-        150
-    );
-
-
-    /* bridge bones */
-
-    for (
-        let i = 0;
-        i < 19;
-        i++
-    ) {
-
-        const x =
-            sx +
-            i * 20;
-
-        ctx.fillStyle =
-            i % 2 === 0
-            ? "#c5b99f"
-            : "#8d806b";
-
-        ctx.fillRect(
-            x,
-            425,
-            18,
-            9
-        );
-
-        ctx.fillRect(
-            x + 7,
-            433,
-            5,
-            20
-        );
-    }
-
-
-    /* side rails */
-
-    for (
-        let i = 0;
-        i < 7;
-        i++
-    ) {
-
-        const x =
-            sx +
-            i * 60;
-
-        ctx.fillStyle =
-            "#aaa08c";
-
-        ctx.fillRect(
-            x,
-            385,
-            7,
-            42
-        );
-
-        ctx.fillRect(
-            x,
-            385,
-            35,
-            7
-        );
-    }
-}
-
-
-/* =========================================================
-   FINISH LINE
-========================================================= */
-
-function drawFinishLine() {
-
-    const sx =
-        FINISH_LINE -
-        cameraX;
-
-    if (
-        sx < -150 ||
-        sx > 1100
-    ) return;
-
-
-    /* checker road */
-
-    for (
-        let i = 0;
-        i < 16;
-        i++
-    ) {
-
-        ctx.fillStyle =
-            i % 2 === 0
-            ? "#eee"
-            : "#222";
-
-        ctx.fillRect(
-            sx,
-            410 + i * 5,
-            28,
-            5
-        );
-    }
-
-
-    /* pole */
-
-    ctx.fillStyle =
-        "#bbb";
-
-    ctx.fillRect(
-        sx + 20,
-        230,
-        6,
-        180
-    );
-
-
-    /* flag */
-
-    ctx.fillStyle =
-        "#a00000";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        sx + 26,
-        235
-    );
-
-    ctx.lineTo(
-        sx + 110,
-        260
-    );
-
-    ctx.lineTo(
-        sx + 26,
-        290
-    );
-
-    ctx.fill();
-}
-
-
-/* =========================================================
-   CAMERA
-========================================================= */
-
-function updateCamera() {
-
-    cameraX +=
-        (
-            cameraTarget -
-            cameraX
-        ) * .075;
-
-
-    if (
-        cameraShake > 0
-    ) {
-
-        cameraX +=
-            Math.random() *
-            cameraShake -
-            cameraShake / 2;
-
-        cameraShake *= .85;
-    }
-
-
-    cameraX =
-        Math.max(
-            0,
-            Math.min(
-                WORLD_WIDTH - 960,
-                cameraX
-            )
-        );
-}
-
-
-function focusOn(
-    worldX
-) {
-
-    cameraTarget =
-        worldX -
-        480;
-}
-
-
-/* =========================================================
-   SCENE SETUP
-========================================================= */
-
-function enterScene(index) {
-
-    sceneIndex = index;
-
-    sceneTimer = 0;
-
-    storyText.textContent =
-        scenes[index].text;
-}
-
-
-/* =========================================================
-   CONTINUOUS RACE
-========================================================= */
-
-function updateRace() {
-
-    const type =
-        scenes[sceneIndex].type;
-
-
-    /*
-    BEFORE THE RACE
-    */
-
-    if (
-        type === "opening"
-    ) {
-
-        skull.x = 320;
-
-        hare.x = 500;
-
-        focusOn(410);
-
-        skull.update(false);
-
-        hare.update(false);
-
-        return;
-    }
-
-
-    if (
-        type === "mock"
-    ) {
-
-        skull.x = 360;
-
-        hare.x = 510;
-
-        hare.lookBack = true;
-
-        focusOn(440);
-
-        return;
-    }
-
-
-    if (
-        type === "death_reply"
-    ) {
-
-        skull.x = 420;
-
-        hare.x = 535;
-
-        hare.lookBack = false;
-
-        focusOn(420);
-
-        return;
-    }
-
-
-    if (
-        type === "challenge"
-    ) {
-
-        skull.x = 430;
-
-        hare.x = 540;
-
-        focusOn(485);
-
-        return;
-    }
-
-
-    if (
-        type === "ready"
-    ) {
-
-        skull.x = 430;
-
-        hare.x = 545;
-
-        focusOn(485);
-
-        return;
-    }
-
-
-    /*
-    RACE START
-    */
-
-    if (
-        type === "race_start"
-    ) {
-
-        skull.x += .95;
-
-        hare.x += 3.8;
-
-        skull.update(true);
-
-        hare.update(true);
-
-        focusOn(
-            (skull.x + hare.x) / 2
-        );
-
-        spawnDust(
-            hare.x,
-            hare.y,
-            2
-        );
-
-        return;
-    }
-
-
-    /*
-    HARE GAINS A MASSIVE LEAD
-    */
-
-    if (
-        type === "hare_leads"
-    ) {
-
-        skull.x += 1.0;
-
-        hare.x += 3.2;
-
-        skull.update(true);
-
-        hare.update(true);
-
-        focusOn(hare.x);
-
-        hare.lookBack =
-            Math.sin(totalTime * .025) > .3;
-
-        if (
-            totalTime % 5 === 0
-        ) {
-
-            spawnDust(
-                hare.x,
-                hare.y,
-                2
-            );
-        }
-
-        return;
-    }
-
-
-    /*
-    SKULL CONTINUES.
-    THE HARE REMAINS AHEAD.
-    */
-
-    if (
-        type === "skull_chases"
-    ) {
-
-        skull.x += 1.15;
-
-        hare.x += 0.15;
-
-        skull.update(true);
-
-        hare.update(true);
-
-        focusOn(skull.x);
-
-        if (
-            totalTime % 9 === 0
-        ) {
-
-            spawnDust(
-                skull.x,
-                skull.y,
-                1
-            );
-        }
-
-        return;
-    }
-
-
-    /*
-    HARE CHECKS THE DISTANCE.
-    */
-
-    if (
-        type === "hare_far_ahead"
-    ) {
-
-        hare.x += .35;
-
-        skull.x += 1.2;
-
-        skull.update(true);
-
-        hare.update(true);
-
-        hare.lookBack = true;
-
-        focusOn(hare.x);
-
-        return;
-    }
-
-
-    /*
-    THE SKULL CROSSES THE BRIDGE.
-    */
-
-    if (
-        type === "bridge"
-    ) {
-
-        skull.x += 1.3;
-
-        skull.update(true);
-
-        focusOn(skull.x);
-
-        if (
-            totalTime % 7 === 0
-        ) {
-
-            spawnDust(
-                skull.x,
-                skull.y,
-                1
-            );
-        }
-
-        return;
-    }
-
-
-    /*
-    HARE IS ALREADY FAR BEYOND
-    THE BRIDGE.
-    */
-
-    if (
-        type === "hare_beyond_bridge"
-    ) {
-
-        hare.x += .25;
-
-        hare.update(true);
-
-        hare.lookBack = false;
-
-        focusOn(hare.x);
-
-        return;
-    }
-
-
-    /*
-    HARE STOPS AND REFLECTS.
-    */
-
-    if (
-        type === "reflection"
-    ) {
-
-        hare.update(false);
-
-        focusOn(hare.x);
-
-        return;
-    }
-
-
-    /*
-    HARE DECIDES TO REST.
-    */
-
-    if (
-        type === "decision_rest"
-    ) {
-
-        hare.update(false);
-
-        focusOn(hare.x);
-
-        return;
-    }
-
-
-    /*
-    HARE FALLS ASLEEP.
-    */
-
-    if (
-        type === "sleep"
-    ) {
-
-        hare.sleeping = true;
-
-        focusOn(hare.x);
-
-        return;
-    }
-
-
-    /*
-    NOW THE CAMERA FOLLOWS
-    THE SKULL AGAIN.
-    */
-
-    if (
-        type === "skull_approaches"
-    ) {
-
-        skull.x += 1.25;
-
-        skull.update(true);
-
-        focusOn(skull.x);
-
-        if (
-            totalTime % 8 === 0
-        ) {
-
-            spawnDust(
-                skull.x,
-                skull.y,
-                1
-            );
-        }
-
-        return;
-    }
-
-
-    /*
-    SKULL FINDS HARE.
-    */
-
-    if (
-        type === "skull_sees_hare"
-    ) {
-
-        focusOn(
-            (skull.x + hare.x) / 2
-        );
-
-        return;
-    }
-
-
-    /*
-    FINAL CONFRONTATION
-    */
-
-    if (
-        type === "choice"
-    ) {
-
-        focusOn(
-            (skull.x + hare.x) / 2
-        );
-
-        return;
-    }
-
-
-    /*
-    BLADE.
-    */
-
-    if (
-        type === "blade"
-    ) {
-
-        focusOn(
-            (skull.x + hare.x) / 2
-        );
-
-        return;
-    }
-
-
-    /*
-    STRIKE.
-    */
-
-    if (
-        type === "strike"
-    ) {
-
-        focusOn(
-            (skull.x + hare.x) / 2
-        );
-
-        deathFrame++;
-
-        cameraShake =
-            5;
-
-        return;
-    }
-
-
-    /*
-    AFTER THE STRIKE.
-    */
-
-    if (
-        type === "death"
-    ) {
-
-        hareDead = true;
-
-        focusOn(skull.x);
-
-        return;
-    }
-
-
-    /*
-    SKULL FINISHES THE RACE.
-    */
-
-    if (
-        type === "victory"
-    ) {
-
-        skull.x += 1.8;
-
-        skull.update(true);
-
-        focusOn(skull.x);
-
-        return;
-    }
-
-
-    /*
-    FINAL SHOT.
-    */
-
-    if (
-        type === "ending"
-    ) {
-
-        focusOn(
-            FINISH_LINE
-        );
-
-        return;
-    }
-}
-
-
-/* =========================================================
-   DRAW DEATH
-========================================================= */
-
-function drawDeathScene() {
-
-    const center =
-        (skull.x + hare.x) / 2 -
-        cameraX;
-
-
-    if (
-        sceneIndex === 18
-    ) {
-
-        /*
-        Sword slash
-        */
-
-        ctx.strokeStyle =
-            "#eee";
-
-        ctx.lineWidth = 7;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            center + 110,
-            235
-        );
-
-        ctx.lineTo(
-            center - 50,
-            405
-        );
-
-        ctx.stroke();
-
-
-        /* red slash pixels */
-
-        ctx.fillStyle =
-            "#b00000";
-
-        for (
-            let i = 0;
-            i < 14;
-            i++
-        ) {
-
-            ctx.fillRect(
-                center - 30 +
-                Math.random() * 80,
-
-                340 +
-                Math.random() * 50,
-
-                4,
-                4
-            );
-        }
-    }
-
-
-    if (
-        sceneIndex >= 19
-    ) {
-
-        /*
-        DEAD BODY
-        */
-
-        ctx.save();
-
-        ctx.translate(
-            hare.x -
-            cameraX,
-            hare.y
-        );
-
-
-        ctx.fillStyle =
-            "#79401f";
-
-        ctx.fillRect(
-            -55,
-            -10,
-            90,
-            25
-        );
-
-
-        /* severed neck */
-
-        ctx.fillStyle =
-            "#720d0d";
-
-        ctx.fillRect(
-            18,
-            -15,
-            18,
-            15
-        );
-
-
-        /* detached head */
-
-        ctx.fillStyle =
-            "#a75a31";
-
-        ctx.fillRect(
-            45,
-            -42,
-            38,
-            29
-        );
-
-
-        /* ears */
-
-        ctx.fillStyle =
-            "#7d4023";
-
-        ctx.fillRect(
-            52,
-            -75,
-            11,
-            35
-        );
-
-        ctx.fillRect(
-            69,
-            -82,
-            11,
-            42
-        );
-
-
-        /* closed eye */
-
-        ctx.fillStyle =
-            "#160606";
-
-        ctx.fillRect(
-            69,
-            -29,
-            9,
-            3
-        );
-
-
-        /* blood */
-
-        ctx.fillStyle =
-            "#a50000";
-
-        ctx.fillRect(
-            30,
-            -2,
-            5,
-            22
-        );
-
-        ctx.fillRect(
-            20,
-            5,
-            4,
-            15
-        );
-
-        ctx.fillRect(
-            38,
-            8,
-            4,
-            12
-        );
-
-        ctx.restore();
-    }
-}
-
-
-/* =========================================================
-   DRAW CHARACTERS
-========================================================= */
-
-function drawCharacters() {
-
-    const type =
-        scenes[sceneIndex].type;
-
-
-    /*
-    PRE-RACE
-    */
-
-    if (
-        type === "opening" ||
-        type === "mock" ||
-        type === "death_reply" ||
-        type === "challenge" ||
-        type === "ready"
-    ) {
-
-        skull.draw(1.35);
-
-        hare.draw(1.35);
-
-        return;
-    }
-
-
-    /*
-    NORMAL RACE
-    */
-
-    if (
-        type === "race_start" ||
-        type === "hare_leads" ||
-        type === "skull_chases" ||
-        type === "hare_far_ahead"
-    ) {
-
-        skull.draw(1.25);
-
-        hare.draw(1.25);
-
-        return;
-    }
-
-
-    /*
-    BRIDGE
-    */
-
-    if (
-        type === "bridge"
-    ) {
-
-        skull.draw(1.45);
-
-        return;
-    }
-
-
-    /*
-    HARE'S REST.
-    ONLY HARE IS THE MAIN SHOT,
-    BUT SKULL IS STILL VISIBLE
-    IN THE DISTANCE WHEN APPROPRIATE.
-    */
-
-    if (
-        type === "hare_beyond_bridge" ||
-        type === "reflection" ||
-        type === "decision_rest"
-    ) {
-
-        hare.draw(1.55);
-
-        return;
-    }
-
-
-    if (
-        type === "sleep"
-    ) {
-
-        hare.draw(1.6);
-
-        return;
-    }
-
-
-    /*
-    APPROACH.
-    BOTH ARE VISIBLE.
-    */
-
-    if (
-        type === "skull_approaches"
-    ) {
-
-        skull.draw(1.4);
-
-        /*
-        Sleeping hare appears in the
-        background if close enough.
-        */
-
-        if (
-            Math.abs(
-                skull.x -
-                hare.x
-            ) < 260
-        ) {
-
-            ctx.globalAlpha = .65;
-
-            hare.draw(.9);
-
-            ctx.globalAlpha = 1;
-        }
-
-        return;
-    }
-
-
-    /*
-    FINAL CONFRONTATION.
-    */
-
-    if (
-        type === "skull_sees_hare" ||
-        type === "choice" ||
-        type === "blade"
-    ) {
-
-        skull.draw(1.55);
-
-        hare.draw(1.5);
-
-        return;
-    }
-
-
-    /*
-    STRIKE / DEATH.
-    */
-
-    if (
-        type === "strike" ||
-        type === "death"
-    ) {
-
-        skull.draw(1.6);
-
-        if (
-            type === "strike"
-        ) {
-
-            hare.draw(1.6);
-        }
-
-        return;
-    }
-
-
-    /*
-    VICTORY
-    */
-
-    if (
-        type === "victory" ||
-        type === "ending"
-    ) {
-
-        skull.draw(1.8);
-
-        return;
-    }
-
-
-    skull.draw(1.3);
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render() {
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    drawBackground();
-
-    drawCharacters();
-
-    drawDeathScene();
-
-    drawParticles();
-
-
-    /*
-    Atmospheric fog
-    */
-
-    const fog =
-        ctx.createLinearGradient(
-            0,
-            350,
-            0,
-            600
-        );
-
-    fog.addColorStop(
-        0,
-        "rgba(30,30,40,0)"
-    );
-
-    fog.addColorStop(
-        1,
-        "rgba(10,10,15,.35)"
-    );
-
-    ctx.fillStyle = fog;
-
-    ctx.fillRect(
-        0,
-        300,
-        960,
-        300
-    );
-
-
-    /*
-    Vignette
-    */
-
-    const vignette =
-        ctx.createRadialGradient(
-            480,
-            300,
-            200,
-            480,
-            300,
-            560
-        );
-
-    vignette.addColorStop(
-        0,
-        "rgba(0,0,0,0)"
-    );
-
-    vignette.addColorStop(
-        1,
-        "rgba(0,0,0,.7)"
-    );
-
-    ctx.fillStyle =
-        vignette;
-
-    ctx.fillRect(
-        0,
-        0,
-        960,
-        600
-    );
-}
-
-
-/* =========================================================
-   MAIN LOOP
-========================================================= */
-
-function gameLoop() {
-
-    if (gameStarted) {
-
-        totalTime++;
-
-        sceneTimer++;
-
-        updateRace();
-
-        updateCamera();
-
-        updateParticles();
-
-
-        /*
-        Scene progression.
-        */
-
-        if (
-            sceneTimer >=
-            scenes[sceneIndex].duration
-        ) {
-
-            if (
-                sceneIndex <
-                scenes.length - 1
-            ) {
-
-                sceneIndex++;
-
-                sceneTimer = 0;
-
-                storyText.textContent =
-                    scenes[sceneIndex].text;
-            }
-        }
-
-
-        /*
-        Make sure the sleeping state
-        remains active.
-        */
-
-        if (
-            scenes[sceneIndex].type ===
-            "sleep"
-        ) {
-
-            hare.sleeping = true;
-        }
-
-
-        if (
-            scenes[sceneIndex].type !==
-            "sleep" &&
-            sceneIndex < 14
-        ) {
-
-            hare.sleeping = false;
-        }
-
-
-        /*
-        Death effect.
-        */
-
-        if (
-            scenes[sceneIndex].type ===
-            "strike"
-        ) {
-
-            if (
-                totalTime % 2 === 0
-            ) {
-
-                cameraShake = 7;
-            }
-        }
-
-
-        /*
-        End.
-        */
-
-        if (
-            sceneIndex ===
-            scenes.length - 1 &&
-            sceneTimer > 320 &&
-            !endingShown
-        ) {
-
-            endingShown = true;
-
-            moral.style.display =
-                "block";
-
-            gameStarted = false;
-        }
-    }
-
-
-    render();
-
-    requestAnimationFrame(
-        gameLoop
-    );
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-function startGame() {
-
-    if (gameStarted)
-        return;
-
-    titleScreen.style.display =
-        "none";
-
-    moral.style.display =
-        "none";
-
-    gameStarted = true;
-
-    sceneIndex = 0;
-
-    sceneTimer = 0;
-
-    totalTime = 0;
-
-    cameraX = 0;
-
-    cameraTarget = 0;
-
-    hareDead = false;
-
-    endingShown = false;
-
-    deathFrame = 0;
-
-    skull.x = 320;
-
-    hare.x = 500;
-
-    hare.sleeping = false;
-
-    hare.lookBack = false;
-
-    storyText.textContent =
-        scenes[0].text;
-}
-
-
-function restartGame() {
-
-    moral.style.display =
-        "none";
-
-    titleScreen.style.display =
-        "flex";
-
-    gameStarted = false;
-}
-
-
-titleScreen.addEventListener(
-    "click",
-    startGame
-);
-
-moral.addEventListener(
-    "click",
-    restartGame
-);
-
-
-/* =========================================================
-   INITIAL FRAME
-========================================================= */
-
-storyText.textContent =
-    scenes[0].text;
-
-gameLoop();
-
-</script>
-
+        generateBtn.addEventListener('click', () => generateAIImage(themeInput.value));
+
+        themeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateAIImage(themeInput.value);
+        });
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const theme = chip.dataset.theme;
+                themeInput.value = theme;
+                generateAIImage(theme);
+            });
+        });
+
+        // Generate initial image on load
+        window.addEventListener('DOMContentLoaded', () => {
+            themeInput.value = "Scary shadow monster";
+            generateAIImage(themeInput.value);
+        });
+    </script>
 </body>
+<script data-goatcounter="https://edthedog-debug5.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </html>
